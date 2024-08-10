@@ -1,0 +1,10 @@
+{%extends 'tracking/base.html'%}
+{%block content%}
+    {%for column in columns%}
+        <div class="column"><h1>{{column.name}}</h1>
+            {%for task in tasks%}
+                <div class="task"><a href="">{{task.name}}</a></div>
+            {%endfor%}
+        </div>
+
+{%endblock%}
