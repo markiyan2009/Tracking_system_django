@@ -3,11 +3,6 @@
 {%block content%}
     <h1>{{project.name}}</h1>
     {%for column_with_task in columns_with_tasks%}
-        <div class="column">
-            
-            {%for task in column_with_task['tasks']%}
-                <div class="task"><a href="">{{task.name}}</a></div>
-            {%endfor%}
-        </div>
+        pass
     {%endfor%}
 {%endblock%}
