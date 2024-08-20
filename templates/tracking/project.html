@@ -1,10 +1,13 @@
+
 {%extends 'tracking/base.html'%}
 {%block content%}
-    {%for column in columns%}
-        <div class="column"><h1>{{column.name}}</h1>
-            {%for task in tasks%}
+    <h1>{{project.name}}</h1>
+    {%for column_with_task in columns_with_tasks%}
+        <div class="column">
+            
+            {%for task in column_with_task['tasks']%}
                 <div class="task"><a href="">{{task.name}}</a></div>
             {%endfor%}
         </div>
-
+    {%endfor%}
 {%endblock%}

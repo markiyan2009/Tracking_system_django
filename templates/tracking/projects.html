@@ -1,6 +1,6 @@
-{%extends 'un_base.html'%}
+{%extends 'tracking/base.html'%}
 {%block content%}
     {%for project in projects%}
-        <h3><a href="{%url 'project' project.name%}">{{project.name}}</a></h3>
+        <h3><a href="{%url 'project' project.pk%}">{{project.name}}</a></h3>
     {%endfor%}
 {%endblock%}
