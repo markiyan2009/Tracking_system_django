@@ -6,15 +6,19 @@ from tracking.mixins import UserIsAssignedMixin
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from tracking.forms import CreateProjectForm
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class ProjectsListview(UserIsAssignedMixin,ListView):
+class ProjectsListview(ListView):
     model = Project
     template_name = "tracking/projects.html"
     context_object_name = "projects"
     def get_queryset(self):
         
         return Project.objects.filter(owner = self.request.user).all()
+    
 
 class ProjectDetailView(UserIsAssignedMixin,DetailView):
     model = Project
@@ -29,19 +33,21 @@ class ProjectDetailView(UserIsAssignedMixin,DetailView):
 
         columns = project.column_set.all()
         
-        columns_with_tasks = []
-        for column in columns:
-            tasks = column.task_set.all()
-            columns_with_tasks.append({
-                'column': column,
-                'tasks': tasks,
-            })
-        
-           
         context['columns'] = columns
-        context['columns_with_tasks'] = columns_with_tasks
         
         return context
+    
+    
+class CreateProjectView(LoginRequiredMixin,CreateView):
+    model = Project
+    template_name="tracking/add_project.html"
+    form_class=CreateProjectForm
+    success_url = reverse_lazy('projects')
+    
+    def form_valid(self,form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 def login_view(request):
     
     if request.method == "POST":

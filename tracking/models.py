@@ -25,7 +25,7 @@ class Task(models.Model):
     name = models.CharField(max_length=150)
     text = models.TextField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="todo")
-    column = models.ForeignKey(Column,on_delete=models.CASCADE)
+    column = models.ForeignKey(Column,on_delete=models.CASCADE, related_name="tasks")
 
     def __str__(self):
         return self.name
