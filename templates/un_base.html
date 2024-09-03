@@ -6,7 +6,13 @@
 
 </head>
 <body>
-    <header><h1>Tracking</h1></header>
+    <header>
+        <h1>Tracking</h1>
+        <form action="{%url 'logout'%}" method="post">
+            {%csrf_token%}
+            <button type="submit">Logout</button>
+        </form>
+    </header>
     
     <hr>
     {%block content%}

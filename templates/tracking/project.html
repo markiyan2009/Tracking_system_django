@@ -5,38 +5,28 @@
     <div class="">
         {%for column in columns%}
             <div class="container width-10 border m-10">
-                <h3>{{column.name}}</h3>
-                {%for task in column.tasks.all%}
-                    <div class="container m-3 p-1">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">{{task.name}}</button>
-                        <div class="modal fade" id="modal" tabindex="-1">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title">{{task.name}}</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                    <span>&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                    {{task.text}}
-                                </div>
-                                <div class="modal-footer">
-                                    ...
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        
-                        <div class="bg-primary text-white">
-                            <h6>{{task.status}}</h6>
-                        </div>
-                        
+                <div class="row">
+                    <div class="col-8">
+                        <h3>{{column.name}}</h3>
                     </div>
-                
+                    <div class="col">
+                        <a href="{%url 'add_task' column.name%}"><button type="submit">Add task</button></a>
+                    </div>
+                </div>
+                {%for task in column.tasks.all%}
+                <div class="row m-3">
+                        <div class="col-6 p-1 m-3 text-white">
+                            <a href="{% url 'task_detail' task.pk %}"><button class="btn btn-primary">{{task.name}}</button></a>
+                        </div>
+
+                        <div class="col p-1 rounded bg-primary text-white">
+                            <h6 class="text-center">{{task.status}}</h6>
+                        </div>
+                </div>
                 {%endfor%}
                 
             </div>
         {%endfor%}
     </div>
+    
 {%endblock%}

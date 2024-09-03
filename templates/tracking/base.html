@@ -6,7 +6,21 @@
 
 </head>
 <body>
-    <header><h1>Tracking</h1></header>
+    <header>
+        <div class="conteiner">
+            <div class="row">
+                <div class="col-10">
+                    <h1>Tracking</h1>
+                </div>
+                <div class="col">
+                    <form action="{%url 'logout'%}" method="post">
+                        {%csrf_token%}
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
     
     <hr>
     {%block content%}

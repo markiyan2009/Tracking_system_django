@@ -29,4 +29,13 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Comment(models.Model):
+    owner = models.ForeignKey(User, models.CASCADE)
+    task = models.ForeignKey(Task, models.CASCADE, null=True)
+    text = models.TextField()
+    post_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.author.username
 
