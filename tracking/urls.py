@@ -10,5 +10,7 @@ urlpatterns = [
     path('logout', views.CustomLogoutView.as_view(), name = 'logout'),
     path('register', views.RegisterView.as_view(), name='register'),
     path('task/<int:pk>/complete', views.TaskCompleteView.as_view(), name='complete_task'),
-    path('<str:name>', views.CreateTaskView.as_view(), name='add_task'),
+    path('<int:column_id>', views.CreateTaskView.as_view(), name='add_task'),
+    path('comment_update/<int:pk>', views.UpdateCommentView.as_view(), name = 'update_comment'),
+    path("comment_delete/<int:pk>", views.DeleteCommentView.as_view(),name='delete_comment'),
 ]
