@@ -128,11 +128,11 @@ class UpdateCommentView(UpdateView):
     success_url = reverse_lazy('projects')
 
     def form_valid(self, form: BaseModelForm):
-        author = self.get_object().owner
+        author = self.get_object().column.project.owner
         if author != self.request.user:
             raise PermissionDenied("You aren't owner of this comment")
         return super().form_valid(form)
-
+#працює неправильно
 class DeleteCommentView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'tracking/comment_delete.html'
@@ -144,3 +144,26 @@ class DeleteCommentView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('projects')
 
+class UpdateTaskView(LoginRequiredMixin,UpdateView):
+    model = Task
+    template_name = 'tracking/task_update.html'
+    fields = ['name','text']
+    success_url = reverse_lazy('projects')
+
+    def form_valid(self, form: BaseModelForm):
+        author = self.get_object().column.project.owner
+        if author != self.request.user:
+            raise PermissionDenied("You aren't owner of this project")
+        return super().form_valid(form)
+#працює неправильно
+class DeleteTaskView(LoginRequiredMixin,DeleteView):
+    model = Task
+    template_name = 'tracking/task_delete.html' 
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(owner=self.request.user)
+
+
+    def get_success_url(self):
+        return reverse_lazy('projects')

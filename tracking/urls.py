@@ -13,4 +13,6 @@ urlpatterns = [
     path('<int:column_id>', views.CreateTaskView.as_view(), name='add_task'),
     path('comment_update/<int:pk>', views.UpdateCommentView.as_view(), name = 'update_comment'),
     path("comment_delete/<int:pk>", views.DeleteCommentView.as_view(),name='delete_comment'),
+    path('task_update/<int:pk>', views.UpdateTaskView.as_view(), name='task_update'),
+    path('task_delete/<int:pk>', views.DeleteTaskView.as_view(), name='task_delete')
 ]
