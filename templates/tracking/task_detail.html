@@ -1,24 +1,24 @@
-{% extends 'un_base.html'%}
+{% extends 'tracking/base.html'%}
 
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row bg-success text-white rounded p-3">
             <h1>{{task.name}}</h1>
         </div>
         <div class="row">
             
-            <div class="col-9 rounded bg-primary text-white">
+            <div class="col-6 align-center">
                 <h3>Description</h3>
                 <p>{{task.text}}</p>
             </div>
            
-            <div class="col">
+            <div class="col p-4">
                 {{task.status}}
             </div>
-            <div class="col">
+            <div class="col p-2">
                 <form action="{%url 'complete_task' task.pk%}" method="post">
                     {%csrf_token%}
-                    <button type="submit">Task complete</button>
+                    <button type="submit" class="btn btn-outline-success ">Task complete</button>
                 </form>
 
             </div>
@@ -26,16 +26,16 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="{% url 'task_update' task.id %}"><button>Update task</button></a>
+                <a href="{% url 'task_update' task.id %}"><button class="btn btn-warning">Update task</button></a>
             </div>
             <div class="col">
-                <a href="{% url 'task_delete' task.id %}"><button>Delete task</button></a>
+                <a href="{% url 'task_delete' task.id %}"><button class="btn btn-danger">Delete task</button></a>
             </div>
         </div>
 
-    </div>
+    
     <!--Comments-->
-    <div class="container ">
+    
         {%for comment in comments%}
             <div class="row m-3">
                 <div class="col">
@@ -43,7 +43,7 @@
                 </div>
                 
             </div>
-            <div class="row bg-primary text-white">
+            <div class="row bg-primary rounded text-white">
                 <div class="col-8 ">
                     <p>{{comment.text}}</p>
                 </div>
@@ -52,15 +52,21 @@
                 </div>
             </div>
             <div class="row">
-                <a href="{% url 'update_comment' comment.id %}"><button type="submit">Update</button></a>
-                <a href="{% url 'delete_comment' comment.id %}"><button type="submit">Delete</button></a>
+                <div class="col-11">
+                    <a href="{% url 'update_comment' comment.id %}"><button type="submit" class="btn btn-warning">Update</button></a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'delete_comment' comment.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
+                </div>
             </div>
         {%endfor%}
+        
+        <form method="post" >
+            {%csrf_token%}
+            {{comment_form.as_p}}
+            <button type="submit" class="btn btn-secondary ">Post</button>
+        </form>
+    
+       
     </div>
-    <form method="post">
-        {%csrf_token%}
-        {{comment_form.as_p}}
-        <button type="submit">Post</button>
-    </form>
- 
 {%endblock%}

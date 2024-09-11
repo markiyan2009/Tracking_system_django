@@ -14,5 +14,6 @@ urlpatterns = [
     path('comment_update/<int:pk>', views.UpdateCommentView.as_view(), name = 'update_comment'),
     path("comment_delete/<int:pk>", views.DeleteCommentView.as_view(),name='delete_comment'),
     path('task_update/<int:pk>', views.UpdateTaskView.as_view(), name='task_update'),
-    path('task_delete/<int:pk>', views.DeleteTaskView.as_view(), name='task_delete')
+    path('task_delete/<int:pk>', views.DeleteTaskView.as_view(), name='task_delete'),
+    path('projects/<int:project_id>/column/add_column', views.CreateColumnView.as_view(), name='add_column'),
 ]

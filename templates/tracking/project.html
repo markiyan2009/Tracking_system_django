@@ -1,42 +1,51 @@
 
 {%extends 'tracking/base.html'%}
 {%block content%}
-    <h1>{{project.name}}</h1>
-    <div class="">
-        <form method="get" class="form-inline mb-3">
-            {{ form.status.label_tag }}
-            {{ form.status }}
-         
-            <button type="submit" class="btn btn-primary ml-2">Фільтрувати</button>
-        </form>
-        {%for column in columns%}
-            <div class="container width-10 border m-10">
-                
-                <div class="row">
-                    <div class="col-8">
-                        <h3>{{column.name}}</h3>
-                    <div class="col">
-                        <a href="{%url 'add_task' column.id %}"><button>Add task</button></a>
-                       
-                    </div>
+    
+    
+        <div class="container">
+            <h1>{{project.name}}</h1>
+            <form method="get" class="form-inline mb-3">
+                {{ form.status.label_tag }}
+                {{ form.status }}
+            
+                <button type="submit" class="btn btn-primary ml-2">Filter</button>
+            </form>
+            
+            <a href="{% url 'add_column' project.id %}"><button type="submit" class="btn btn-success">Add column</button></a>
+            
+            
+            {%for column in columns%}
+                <div class="container width-10 border mb-3 bg-success bg-gradient rounded">
+                    
+                    <div class="row p-4">
+                        <div class="col-8 text-white">
+                            <h3>{{column.name}}</h3>
+                        </div>
+                        <div class="col">
+                            <a href="{%url 'add_task' column.id %}"><button class="btn btn-light">Add task</button></a>
+                        
+                        </div>
+                        
+                        
+                        
                     </div>
                     <hr>
-                    
-                </div>
-                {%for task in column.filtered_tasks.all%}
-                <div class="row m-3">
-                        <div class="col-6 p-1 m-3 text-white">
-                            <a href="{% url 'task_detail' task.pk %}"><button class="btn btn-primary">{{task.name}}</button></a>
-                        </div>
+                    {%for task in column.filtered_tasks.all%}
+                    <div class="row mb-3">
+                            <div class="col-10 p-1 m-3 text-white">
+                                <a href="{% url 'task_detail' task.pk %}"><button class="btn bg-primary-subtle ">{{task.name}}</button></a>
+                            </div>
 
-                        <div class="col p-1 rounded bg-primary text-white">
-                            <h6 class="text-center">{{task.status}}</h6>
-                        </div>
+                            <div class="col align-middle">
+                                <h6 class="text-center rounded p-2 bg-light">{{task.status}}</h6>
+                            </div>
+                    </div>
+                    {%endfor%}
                 </div>
-                {%endfor%}
                 
-            </div>
-        {%endfor%}
-    </div>
+            {%endfor%}
+        </div>
+   
     
 {%endblock%}

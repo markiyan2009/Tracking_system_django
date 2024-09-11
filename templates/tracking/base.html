@@ -7,18 +7,25 @@
 </head>
 <body>
     <header>
-        <div class="conteiner">
+        <div class="conteiner m-3">
             <div class="row">
                 <div class="col-10">
                     <h1>Tracking</h1>
                 </div>
-                <div class="col">
+                <div class="col m-1 ">
                     <form action="{%url 'logout'%}" method="post">
                         {%csrf_token%}
-                        <button type="submit">Logout</button>
+                        <button type="submit" class="btn btn-secondary">Logout</button>
                     </form>
                 </div>
+                
             </div>
+            
+                
+                
+           
+
+
         </div>
     </header>
     
@@ -26,20 +33,20 @@
     {%block content%}
     {%endblock%}
     <hr>
+    
     <footer>
-        <div id="projects">
-            {%for project in projects%}
-                <div class="project"><a href="">{{project_name}}</a></div>
-            {%endfor%}
+        <div class="container m-2">
+            <p>Andrusik Markiyan <br>
+            2024</p>
         </div>
-        <p>Andrusik Markiyan <br>
-        2024</p>
+        
 
-        <div class="scroll">
-            <a href="{%url 'login'%}">Login</a>
-            <a href="">Register</a>
-            
+        
+        <div class="container m-2">
+            <a href="{% url 'login' %}"><button class="btn m-2 bg-info">Login</button></a>
+            <a href="{% url 'register' %}"><button class="btn bg-info">Register</button></a>
         </div>
+        
     </footer>
     
     

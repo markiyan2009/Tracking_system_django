@@ -29,3 +29,9 @@ class TaskFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(TaskFilterForm, self).__init__(*args, **kwargs)
         self.fields["status"].widget.attrs.update({"class": "form-control"})
+
+class CreateColumnForm(forms.ModelForm):
+    class Meta():
+        model = Column
+        fields = ['name']
+        

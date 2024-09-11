@@ -4,11 +4,11 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render,redirect, get_object_or_404
 from tracking.models import Project, Column, Task, Comment
-from tracking.mixins import UserIsAssignedMixin
+from tracking.mixins import UserIsAssignedTaskMixin, UserIsAssignedCommentkMixin
 from django.views.generic import ListView, DetailView, CreateView, View, UpdateView, DeleteView
 from django.contrib import messages
 from django.contrib.auth.models import User
-from tracking.forms import CreateProjectForm, CreateCommentForm, CreateTaskForm, TaskFilterForm
+from tracking.forms import CreateProjectForm, CreateCommentForm, CreateTaskForm, TaskFilterForm, CreateColumnForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView,LogoutView
@@ -16,6 +16,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
+from random import randint
+
+
 
 # Create your views here.
 class ProjectsListview(ListView):
@@ -23,6 +26,7 @@ class ProjectsListview(ListView):
     template_name = "tracking/projects.html"
     context_object_name = "projects"   
 
+    
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     template_name = "tracking/project.html"
@@ -34,7 +38,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         
         project = context['project']
         
-
         columns = project.column_set.all()
 
         status = self.request.GET.get("status", "")
@@ -91,13 +94,13 @@ class TaskCompleteView(LoginRequiredMixin, View):
         task = self.get_object()
         task.status = "done"
         task.save()
-        return HttpResponseRedirect(reverse_lazy("projects"))
+        return HttpResponseRedirect(reverse_lazy("task_detail"))
 
     def get_object(self):
         task_id = self.kwargs.get("pk")
         return get_object_or_404(Task, pk=task_id)
     
-
+    
 class CustomLogoutView(LogoutView):
     next_page="login"
 
@@ -114,35 +117,37 @@ class RegisterView(CreateView):
 class CreateTaskView(CreateView):
     template_name = 'tracking/add_task.html'
     form_class = CreateTaskForm
-    success_url = reverse_lazy('projects')
+    
     def form_valid(self, form):
         column_id = self.kwargs['column_id']
         column = get_object_or_404(Column, id=column_id)
         form.instance.column = column
         return super().form_valid(form)
+    def get_success_url(self) -> str:
+        return reverse_lazy('project',  kwargs={'pk': self.object.column.project.pk})
     
 class UpdateCommentView(UpdateView):
     model = Comment
     template_name = 'tracking/update_comment.html'
     fields= ['text']
-    success_url = reverse_lazy('projects')
+    
 
     def form_valid(self, form: BaseModelForm):
-        author = self.get_object().column.project.owner
+        author = self.get_object().task.column.project.owner
         if author != self.request.user:
             raise PermissionDenied("You aren't owner of this comment")
         return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('task_detail',  kwargs={'pk': self.object.task.pk})
 #працює неправильно
-class DeleteCommentView(LoginRequiredMixin, DeleteView):
+class DeleteCommentView(LoginRequiredMixin, UserIsAssignedCommentkMixin,DeleteView):
     model = Comment
     template_name = 'tracking/comment_delete.html'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(owner=self.request.user)
-
+    
     def get_success_url(self):
-        return reverse_lazy('projects')
+        return reverse_lazy('task_detail',  kwargs={'pk': self.object.task.pk})
 
 class UpdateTaskView(LoginRequiredMixin,UpdateView):
     model = Task
@@ -155,15 +160,28 @@ class UpdateTaskView(LoginRequiredMixin,UpdateView):
         if author != self.request.user:
             raise PermissionDenied("You aren't owner of this project")
         return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('task_detail',  kwargs={'pk': self.object.pk})
 #працює неправильно
-class DeleteTaskView(LoginRequiredMixin,DeleteView):
+class DeleteTaskView(LoginRequiredMixin, UserIsAssignedTaskMixin,DeleteView):
     model = Task
     template_name = 'tracking/task_delete.html' 
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(owner=self.request.user)
-
-
     def get_success_url(self):
-        return reverse_lazy('projects')
+        return reverse_lazy('project',  kwargs={'pk': self.object.column.project.pk})
+
+class CreateColumnView(CreateView):
+    
+    form_class = CreateColumnForm
+    template_name = 'tracking/create_column.html'
+
+    def form_valid(self, form):
+        project_id = self.kwargs['project_id ']
+        project = get_object_or_404(Project,id = project_id)
+        
+        form.instance.project = project
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('project',  kwargs={'pk': self.kwargs['project_id']})
