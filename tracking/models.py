@@ -37,5 +37,5 @@ class Comment(models.Model):
     post_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.author.username
+        return self.owner.username
 

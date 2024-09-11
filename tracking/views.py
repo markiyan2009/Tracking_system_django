@@ -94,7 +94,7 @@ class TaskCompleteView(LoginRequiredMixin, View):
         task = self.get_object()
         task.status = "done"
         task.save()
-        return HttpResponseRedirect(reverse_lazy("task_detail"))
+        return HttpResponseRedirect(reverse_lazy("task_detail", kwargs={'pk': task.pk}))
 
     def get_object(self):
         task_id = self.kwargs.get("pk")

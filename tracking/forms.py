@@ -5,6 +5,9 @@ class CreateProjectForm(forms.ModelForm):
     class Meta():
         model = Project
         fields = ["name"]
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control-plaintext'})
+        }
 
 class CreateCommentForm(forms.ModelForm):
     class Meta():
