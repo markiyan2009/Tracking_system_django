@@ -1,11 +1,13 @@
 {%extends 'tracking/base.html'%}
 
 {%block content%}
-    <div class="form-group">
-        <form method="post">
-            {%csrf_token%}
-            {{form.as_p}}
-            <button type="submit">Add</button>
-        </form>
+    <div class="container">
+        <div class="form-group">
+            <form method="post">
+                {%csrf_token%}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-warning">Add</button>
+            </form>
+        </div>
     </div>
 {%endblock%}

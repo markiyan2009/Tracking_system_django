@@ -5,19 +5,26 @@ class CreateProjectForm(forms.ModelForm):
     class Meta():
         model = Project
         fields = ["name"]
-        widgets = {
-            'name' : forms.TextInput(attrs={'class':'form-control-plaintext'})
-        }
-
+        
+    
+        
 class CreateCommentForm(forms.ModelForm):
     class Meta():
         model =Comment
         fields = ['text']
+        widgets = {
+            'text' : forms.Textarea(attrs={'class' : 'form-control'})
+        }
 
 class CreateTaskForm(forms.ModelForm):
     class Meta():
         model = Task
         fields = ['name','text', 'status']
+        widgets = {
+            'name' : forms.TextInput(attrs={'class' : 'form-control'}),
+            'text' : forms.Textarea(attrs={'class' : 'form-control'}),
+            'status' : forms.Select(choices=Task.STATUS_CHOICES,attrs={'class' : 'form-control'})
+        }
 
 class TaskFilterForm(forms.Form):
     STATUS_CHOICES = [
@@ -37,4 +44,9 @@ class CreateColumnForm(forms.ModelForm):
     class Meta():
         model = Column
         fields = ['name']
+        widgets = {
+            'name' : forms.TextInput(attrs={'class' : 'form-control'})
+        }
+
+
         

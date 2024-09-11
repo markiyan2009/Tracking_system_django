@@ -1,10 +1,14 @@
 {% extends 'tracking/base.html' %}
 
 {% block content %}
-    <form method="post">
-        {%csrf_token%}
-        {{form.as_p}}
+    <div class="container">
+        <div class="form-group">
+            <form method="post">
+                {%csrf_token%}
+                {{form.as_p}}
 
-        <button type="submit">Add column</button>
-    </form>
+                <button type="submit" class="btn btn-warning">Add column</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

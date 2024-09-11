@@ -36,14 +36,18 @@
     
     <!--Comments-->
     
+        <div class="row m-3">
+            <h1>Comments</h1>
+        </div>
         {%for comment in comments%}
             <div class="row m-3">
+                
                 <div class="col">
                     <h4>{{comment.owner}}</h4>
                 </div>
                 
             </div>
-            <div class="row bg-primary rounded text-white">
+            <div class="row bg-info rounded text-white">
                 <div class="col-8 ">
                     <p>{{comment.text}}</p>
                 </div>
@@ -52,21 +56,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-11">
+                <div class="col-11 my-2">
                     <a href="{% url 'update_comment' comment.id %}"><button type="submit" class="btn btn-warning">Update</button></a>
                 </div>
-                <div class="col">
+                <div class="col my-2">
                     <a href="{% url 'delete_comment' comment.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
                 </div>
             </div>
         {%endfor%}
-        
-        <form method="post" >
-            {%csrf_token%}
-            {{comment_form.as_p}}
-            <button type="submit" class="btn btn-secondary ">Post</button>
-        </form>
-    
+        <div class="row my-3">
+            <form method="post" >
+                {%csrf_token%}
+                {{comment_form.as_p}}
+                <button type="submit" class="btn btn-secondary ">Post</button>
+            </form>
+        </div>
        
     </div>
 {%endblock%}
