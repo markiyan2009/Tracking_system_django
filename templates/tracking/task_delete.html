@@ -3,12 +3,12 @@
 {% block content %}
 <div class="container">
     <h2>Видалення завдання</h2>
-    <p>Ви впевнені, що хочете видалити завдання "{{ task.name }}"?</p>
+    <p>Are you sure you want to delete the task "{{ task.name }}"?</p>
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Так, видалити</button>
-        <a href="{% url 'projects' %}" class="btn btn-secondary">Ні, повернутися до списку завдань</a>
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+        <a href="{% url 'projects' %}" class="btn btn-secondary">No, return to projects</a>
     </form>
 </div>
 {% endblock %}

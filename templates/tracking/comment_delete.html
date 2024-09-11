@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <h2>Delete comment</h2>
-    <p>Ви впевнені, що хочете видалити завдання "{{ object.title }}"?</p>
+    <p>Are you sure you want to delete the comment?</p>
 
     <form method="post">
         {% csrf_token %}
