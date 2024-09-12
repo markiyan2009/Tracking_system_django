@@ -126,7 +126,7 @@ class CreateTaskView(CreateView):
     def get_success_url(self) -> str:
         return reverse_lazy('project',  kwargs={'pk': self.object.column.project.pk})
     
-class UpdateCommentView(UpdateView):
+class UpdateCommentView(UserIsAssignedCommentkMixin,UpdateView):
     model = Comment
     template_name = 'tracking/update_comment.html'
     fields= ['text']
@@ -149,7 +149,7 @@ class DeleteCommentView(LoginRequiredMixin, UserIsAssignedCommentkMixin,DeleteVi
     def get_success_url(self):
         return reverse_lazy('task_detail',  kwargs={'pk': self.object.task.pk})
 
-class UpdateTaskView(LoginRequiredMixin,UpdateView):
+class UpdateTaskView(UserIsAssignedTaskMixin,LoginRequiredMixin,UpdateView):
     model = Task
     template_name = 'tracking/task_update.html'
     fields = ['name','text']
@@ -177,7 +177,7 @@ class CreateColumnView(CreateView):
     template_name = 'tracking/create_column.html'
 
     def form_valid(self, form):
-        project_id = self.kwargs['project_id ']
+        project_id = self.kwargs['project_id']
         project = get_object_or_404(Project,id = project_id)
         
         form.instance.project = project
